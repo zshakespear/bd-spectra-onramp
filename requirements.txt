@@ -1,0 +1,12 @@
+# Everything students need is preinstalled in Google Colab. For local use:
+numpy
+scipy
+matplotlib
+pandas
+pyyaml
+ipywidgets
+# Instructor-only (building data and notebooks):
+h5py
+nbformat
+nbclient
+ipykernel

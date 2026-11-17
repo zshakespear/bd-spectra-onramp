@@ -1,0 +1,12 @@
+# Low-metallicity comparison sequence at L0 and L7, Rustamkulov et al. 2026 Table 3 (https://arxiv.org/abs/2607.00543).
+# Transcribed 2026-11-17 from the instructor's copy (data/rustamkulov_low_metallicity_sequence.txt).
+# Metallicity classes (sd, esd, usd) as defined by Zhang et al. (2017). Types are near-infrared except the L0 (optical).
+# base_type is the subtype the sequence is built around.
+order,spectral_type,base_type,metallicity_class,name,distance_pc,distance_err_pc,astrometry_ref,is_standard
+1,L0,L0,field,2MASS J03454316+2540233,26.39,0.18,Gaia DR3,Yes
+2,sdL0,L0,sd,2MASS J01301256-1047285,62.31,2.62,Gaia DR3,Yes
+3,esdL0,L0,esd,2MASS J00144919-0838207,50.28,0.50,Gaia DR3,Yes
+4,usdL0,L0,usd,2MASS J10130734-1356204,56.47,0.52,Gaia DR3,Yes
+5,L7,L7,field,2MASS J03400942-6724051,9.36,0.04,Gaia EDR3,Yes
+6,sdL7,L7,sd,2MASS J14162408+1348263,9.28,0.02,Gaia EDR3,Yes
+7,esdL7,L7,esd,2MASS J05325346+8246465,24.56,0.28,Gaia DR3,Yes

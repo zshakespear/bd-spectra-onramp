@@ -1,0 +1,58 @@
+# Spectral indices used in the notebooks and field guide.
+#
+# Source: Rustamkulov et al. 2026, Table 5 (regions) and Equations 3-4
+# (definition and uncertainty), https://arxiv.org/abs/2607.00543
+#
+#   index = -2.5 log10( F_band / F_norm )      (mean fluxes; bigger = more absorption)
+#   sigma = (2.5 / ln 10) * sqrt( (sigma_F/F_band)^2 + (sigma_norm/F_norm)^2 )
+#
+# INSTRUCTOR-EDITABLE. Students must not invent new indices. If you add one,
+# give its source. bdtools reads every entry under `indices:`.
+#
+# flux_unit: the unit the mean fluxes are taken in. F_nu and F_lambda give
+# slightly different index values. Indices are computed on F_nu in Jy
+# (confirmed by the instructor, 2026-11-16).
+#
+# Uncertainty of a region's mean flux: sigma_F = sqrt(sum sigma_i^2) / N, the
+# per-channel errors summed in quadrature (as the paper says) and divided by N
+# because F is a mean. This is the only choice consistent with the formula
+# above: it gives the same sigma_F/F as summing both fluxes and errors, so the
+# index error does not change if a region gains or loses channels for no reason.
+
+flux_unit: Jy
+mean_uncertainty: quadrature_sum_over_n
+
+indices:
+  CH4:
+    label: "CH$_4$ index"
+    feature_um: [3.20, 3.65]
+    norm_um: [3.70, 4.14]
+    source: "Rustamkulov et al. 2026, Table 5"
+    measures: "Depth of the 3.3 um CH4 band relative to the 4 um window."
+    overlap_note: >-
+      The feature region is not clean CH4: other absorbers overlap it, and the
+      4 um normalization window is only the nearest thing to a continuum
+      (Rustamkulov et al. 2026). Check the band atlas before reading this index
+      as 'more CH4'.
+    not_meaningful_for: ["Y"]
+    not_meaningful_reason: "CH4 is undetected in Y dwarfs at SPHEREx sensitivity (Rustamkulov et al. 2026)."
+  CO2:
+    label: "CO$_2$ index"
+    feature_um: [4.18, 4.35]
+    norm_um: [3.70, 4.14]
+    source: "Rustamkulov et al. 2026, Table 5"
+    measures: "Depth of the 4.3 um CO2 band relative to the 4 um window."
+    overlap_note: >-
+      The 4.18-4.35 um region also sits on the wings of neighbouring bands, so
+      changes elsewhere can move this index.
+    not_meaningful_for: []
+  CO:
+    label: "CO index"
+    feature_um: [4.55, 4.80]
+    norm_um: [3.70, 4.14]
+    source: "Rustamkulov et al. 2026, Table 5"
+    measures: "Depth of the 4.6 um CO fundamental band relative to the 4 um window."
+    overlap_note: >-
+      Other absorbers overlap the CO region; a small 4.67 um peak appears in it
+      from L4 onward (Rustamkulov et al. 2026, Sec. 3).
+    not_meaningful_for: []

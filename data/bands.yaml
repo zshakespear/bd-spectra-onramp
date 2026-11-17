@@ -1,0 +1,103 @@
+# Band atlas: which absorber shapes which part of the 0.75-5 um spectrum.
+#
+# INSTRUCTOR-EDITABLE. bdtools draws "molecule bars" from this file, and the
+# field guide's band atlas page is written from it, so molecule colours are
+# the same everywhere.
+#
+# Each band has:
+#   range_um  -- the wavelength range to shade at SPHEREx resolution (approximate)
+#   types     -- spectral types in which the band is prominent
+#   status    -- how well the entry is checked:
+#                  spec      : stated in Rustamkulov et al. 2026 Sec. 3 (the paper the course follows)
+#                  checked   : range checked against Cushing et al. 2005 (ApJ 623, 1115), band table,
+#                              the instructor's copy in ../data/Cushing2005bands.txt (2026-11-17)
+#                  uncertain : listed by Cushing et al. 2005, but whether SPHEREx (R ~ 40) separates it
+#                              is itself uncertain; hidden from plots unless asked for
+#   source    -- where the numbers come from
+#
+# Scope (instructor, 2026-11-17): only bands in Cushing et al. 2005 or Rustamkulov et al. 2026 are kept;
+# this atlas is for learning the technique, not a complete line list. Removed: K I (0.75-0.90 um red
+# wing; in neither source). From Cushing's table, the OH band heads at 3.4-4.2 um are left out: the course
+# paper does not discuss them for L/T/Y dwarfs, and they would sit on the 3.70-4.14 um index normalization
+# window. Where the two sources give different ranges, the Rustamkulov range is drawn and the Cushing
+# range is given in a note.
+#
+# Colours are the Okabe & Ito (2008) colour-blind-safe palette.
+
+absorbers:
+  H2O:
+    label: "H$_2$O"
+    color: "#0072B2"
+    show_by_default: true
+    note: "The main absorber in every L, T, and Y dwarf; carves the troughs between the Y, J, H, K peaks."
+    bands:
+      - {range_um: [0.89, 0.99], types: "L T Y", status: checked, source: "Cushing et al. 2005 band table", overlaps: "FeH 0.99 um"}
+      - {range_um: [1.09, 1.20], types: "L T Y", status: checked, source: "Cushing et al. 2005 band table", overlaps: "CH4 1.10-1.24 um in T dwarfs"}
+      - {range_um: [1.30, 1.51], types: "L T Y", status: checked, source: "Cushing et al. 2005 band table"}
+      - {range_um: [1.75, 2.05], types: "L T Y", status: checked, source: "Cushing et al. 2005 band table", overlaps: "CH4 1.6-1.8 um wing; H2 CIA"}
+      - {range_um: [2.30, 3.20], types: "L T Y", status: checked, source: "Cushing et al. 2005 band table", overlaps: "CO 2.3 um heads; CH4 3.3 um on its long side; H2 CIA"}
+  CH4:
+    label: "CH$_4$"
+    color: "#E69F00"
+    show_by_default: true
+    note: "Appears after L4 at 3-3.6 um; defines T dwarfs in the near-infrared."
+    bands:
+      - {range_um: [1.10, 1.24], types: "T Y", status: checked, source: "Cushing et al. 2005 band table (3 nu3); Rustamkulov et al. 2026 Sec. 3 ('narrow feature at 1.15 um' from T4)", overlaps: "H2O 1.09-1.20 um"}
+      - {range_um: [1.60, 1.80], types: "T Y", status: checked, source: "Cushing et al. 2005 band table"}
+      - {range_um: [2.15, 2.50], types: "T Y", status: checked, source: "Cushing et al. 2005 band table", overlaps: "H2 CIA; CO 2.3 um"}
+      - {range_um: [3.00, 3.60], types: "late-L T", status: spec, source: "Rustamkulov et al. 2026 Sec. 3 ('visible after L4 ... 3-3.6 um'); Cushing et al. 2005 give the nu3 band as 3.0-3.8 um", overlaps: "H2O 2.3-3.2 um wing"}
+  CO:
+    label: "CO"
+    color: "#D55E00"
+    show_by_default: true
+    note: "Strong in L and T dwarfs; its 4.6 um notch weakens sharply between T6 and T7."
+    bands:
+      - {range_um: [2.29, 2.45], types: "L early-T", status: checked, source: "Cushing et al. 2005 band table (12CO band heads 2.294-2.414 um, 13CO 2.345 um; absorption extends redward of each head)", overlaps: "CH4 2.15-2.5 um; H2O; H2 CIA"}
+      - {range_um: [4.40, 4.90], types: "L T", status: spec, source: "Rustamkulov et al. 2026 Sec. 3 ('CO (4.4-4.9 um) notch grows beyond L3')", overlaps: "CO2 wing; small 4.67 um peak from L4"}
+  CO2:
+    label: "CO$_2$"
+    color: "#009E73"
+    show_by_default: true
+    note: "A notch on the long side of the 4 um peak, beyond L3."
+    bands:
+      - {range_um: [4.15, 4.30], types: "L T", status: spec, source: "Rustamkulov et al. 2026 Sec. 3 ('CO2 (4.15-4.3 um) notch grows beyond L3')", overlaps: "CO 4.4-4.9 um on the long side"}
+  H2_CIA:
+    label: "H$_2$ CIA"
+    color: "#999999"
+    show_by_default: true
+    note: "Collision-induced absorption by H2: broad, no sharp edges. Stronger at high gravity and low metallicity."
+    bands:
+      - {range_um: [1.70, 3.00], types: "L T Y (strongest in low-metallicity and high-gravity objects)", status: spec, source: "Rustamkulov et al. 2026 Sec. 3 (low-metallicity sequence); Cushing et al. 2005 give the 1-0 band as 1.8-2.8 um", overlaps: "H2O, CH4, CO in the same range"}
+  FeH:
+    label: "FeH"
+    color: "#CC79A7"
+    show_by_default: false
+    note: "Sharp band heads in L dwarfs at high resolution; whether SPHEREx separates them is uncertain."
+    bands:
+      - {range_um: [0.98, 1.01], types: "L early-T", status: uncertain, source: "Cushing et al. 2005 band table (F-X 0-0: 0.9896 um head, 1.0061 um Q-branch; Wing-Ford band)", overlaps: "H2O 0.89-0.99 um"}
+      - {range_um: [1.19, 1.24], types: "L early-T", status: uncertain, source: "Cushing et al. 2005 band table (F-X heads 1.1939, 1.2389 um; Q-branch 1.2221 um)", overlaps: "H2O; CH4 1.10-1.24 um"}
+      - {range_um: [1.58, 1.63], types: "L early-T", status: uncertain, source: "Cushing et al. 2005 band table (E-A heads 1.5826-1.6246 um)", overlaps: "H peak; CH4 1.6-1.8 um"}
+  VO:
+    label: "VO"
+    color: "#F0E442"
+    show_by_default: false
+    note: "Seen in late-M and early-L dwarfs on the short side of the Y peak; whether SPHEREx separates it is uncertain."
+    bands:
+      - {range_um: [1.05, 1.08], types: "early-L", status: uncertain, source: "Cushing et al. 2005 band table (A-X 0-0)", overlaps: "Y peak"}
+  NH3:
+    label: "NH$_3$"
+    color: "#56B4E9"
+    show_by_default: false
+    note: "Mention only: unlikely to be detectable with SPHEREx (Rustamkulov et al. 2026). Do not look for it."
+    bands:
+      - {range_um: [2.95, 3.10], types: "late-T Y", status: uncertain, source: "Rustamkulov et al. 2026 (not detectable at SPHEREx sensitivity)"}
+
+# Peaks between the troughs. Not absorbers -- shown as labels, not bars. Each lies in a gap between the
+# Cushing et al. 2005 H2O bands (0.99-1.09, 1.20-1.30, 1.51-1.75, 2.05-2.30 um); Rustamkulov et al. 2026
+# Sec. 3 use the J, H, K and 4 um peaks to describe the sequence.
+windows:
+  - {name: "Y peak", center_um: 1.08, status: checked, source: "gap between Cushing et al. 2005 H2O bands"}
+  - {name: "J peak", center_um: 1.27, status: checked, source: "gap between Cushing et al. 2005 H2O bands; Rustamkulov et al. 2026 Sec. 3"}
+  - {name: "H peak", center_um: 1.58, status: checked, source: "gap between Cushing et al. 2005 H2O bands; Rustamkulov et al. 2026 Sec. 3"}
+  - {name: "K peak", center_um: 2.10, status: checked, source: "gap between Cushing et al. 2005 H2O bands; Rustamkulov et al. 2026 Sec. 3"}
+  - {name: "4 um peak", center_um: 4.00, status: spec, source: "Rustamkulov et al. 2026 Sec. 3; index normalization region 3.70-4.14 um"}

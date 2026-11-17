@@ -1,0 +1,14 @@
+# Stand-ins for Rustamkulov et al. 2026 Table 1-3 objects that are not in the public SPIFF QR2-2026-04-24 bundle.
+# Chosen 2026-11-17 at the instructor's request ("use the next-best object of the same type").
+# Rule: SPIFF "Known" sample; literature type equal to the slot (nearest half-subtype if none); field age and no
+# known unresolved binary in the UltracoolSheet; then the highest median S/N of the binned spectrum.
+# Distances: Table 1 for Table 1 objects, otherwise UltracoolSheet dist_formula (parallax reference in distance_ref);
+# blank = unknown.
+# No stand-in exists for: field ~Y4 (WISE J085510.83-071442.5; nothing later than Y2 in SPIFF) and
+# low-metallicity usdL0 (2MASS J10130734-1356204; no ultra-subdwarf of any type in SPIFF).
+sequence,slot,table_name,spiff_designation,distance_pc,distance_err_pc,distance_ref,reason
+field,L9,DENIS J025503.3-470049,WISEPC J004928.48+044100.1,16.00,0.70,Best et al. 2020,"Table 1 L9 not in SPIFF QR2. Field-age single L9 (Kirkpatrick et al. 2011), median S/N 24; the higher-S/N 2MASS J00310928+5749364 (S/N 48) was passed over because it is young (0.15-0.25 Gyr)."
+field,Y1,WISE J154151.65-225024.9,WISE J035000.32-565830.2,5.67,0.07,Kirkpatrick et al. 2021,"Table 1 Y1 not in SPIFF QR2. This is the Y1 spectral standard (Table 1 note L: poorer S/N than the object chosen there); median S/N 2.8."
+low_gravity,L0,2MASS J03454316+2540233,2MASS J17312974+2721233,11.95,0.01,Rustamkulov et al. 2026 Table 1,"The L0 standard is not in SPIFF QR2. Uses the Table 1 field L0, which Rustamkulov et al. chose over the standard for its higher S/N (median S/N 125)."
+low_metallicity,L0,2MASS J03454316+2540233,2MASS J17312974+2721233,11.95,0.01,Rustamkulov et al. 2026 Table 1,"The L0 standard is not in SPIFF QR2. Uses the Table 1 field L0, which Rustamkulov et al. chose over the standard for its higher S/N (median S/N 125)."
+low_metallicity,esdL0,2MASS J00144919-0838207,ULAS J135216.31+312327.0,,,,"Table 3 esdL0 not in SPIFF QR2. The only extreme subdwarf near L0 in SPIFF (literature type esdL0.5; SPIFF autotype sdM9.5); median S/N only 6. Distance unknown (not in the UltracoolSheet)."

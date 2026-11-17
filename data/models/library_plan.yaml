@@ -1,0 +1,80 @@
+# Which model spectra go into the precomputed library (notebook 5).
+#
+# STATUS: APPROVED 2026-11-16; T_late_Y enabled 2026-11-17 with the Flame Skimmer Teff it has. build_model_library.py
+# refuses to run until `approved: true`.
+#
+# For each fiducial, one parameter is changed at a time; every other
+# parameter stays at the fiducial value. Only grid points that exist are used
+# (the script stops with a list of missing files otherwise).
+#
+# Parameter names and units are bdtools' own; each grid's reader translates:
+#   teff  [K]
+#   logg  [log10 cm s^-2]
+#   mh    [M/H], dex relative to solar
+#   clouds  Diamondback: f_sed (1, 2, 3, 4, 8) or "nc" (cloud-free)
+#           Exo-REM:     f_sed values from its grid list
+#   kzz   log10 Kzz [cm^2 s^-1]   (no grid with a Kzz axis yet; the instructor
+#         will add one -- then add `kzz:` sweeps to the fiducials it covers)
+#   co    C/O: absolute for Exo-REM; relative to solar (0.458) for Flame Skimmer
+#
+# A fiducial with `pending: true` is kept in the plan but skipped by the build.
+#
+# Grid facts below were read from the local files and MUST be confirmed
+# against each grid's paper / Zenodo record (see README "Open questions").
+
+approved: true            # approved by the instructor 2026-11-16; T_late_Y added 2026-11-17
+resolution: 500          # store at R ~ 500; notebooks bin to each spectrum's channels
+wave_range_um: [0.65, 5.3]
+
+fiducials:
+  L:
+    description: "Mid/late L dwarf, cloudy"
+    grid: diamondback
+    params: {teff: 1600, logg: 5.0, mh: 0.0, clouds: 2}
+    sweeps:
+      teff: [1300, 1400, 1500, 1700, 1800, 2000]
+      logg: [3.5, 4.0, 4.5, 5.5]
+      mh: [-0.5, 0.5]
+      clouds: [1, 3, 4, 8, nc]
+      # kzz: waiting for the Kzz grid the instructor will add
+  T_early:
+    description: "Early T dwarf, at the L/T transition"
+    grid: diamondback
+    params: {teff: 1200, logg: 5.0, mh: 0.0, clouds: 4}
+    sweeps:
+      teff: [900, 1000, 1100, 1300, 1400]
+      logg: [4.0, 4.5, 5.5]
+      mh: [-0.5, 0.5]
+      clouds: [1, 2, 3, 8, nc]
+      # kzz: waiting for the Kzz grid the instructor will add
+  T_late_Y:
+    description: "Late T / Y dwarf, cloud-free with disequilibrium chemistry"
+    grid: flameskimmer
+    params: {teff: 500, logg: 5.0, mh: 0.0, co: 1.0, kzz: 4}
+    sweeps:
+      teff: [525, 550]     # only Teff 500-550 K downloaded so far; widen to e.g. 300-800 K as sets arrive
+      logg: [4.0, 4.5, 5.5]
+      mh: [-0.5, 0.5]
+      kzz: [2, 7, 9]
+      # clouds: not available -- Flame Skimmer is cloud-free
+
+# Same physical parameters, different grid: shows students that grids
+# disagree (by up to ~2x at some wavelengths; Rustamkulov et al. 2026).
+cross_grid:
+  - {grid: exorem, params: {teff: 1600, logg: 5.0, mh: 0.0, co: 0.55, clouds: 2.0}, matches: L}
+  - {grid: exorem, params: {teff: 1200, logg: 5.0, mh: 0.0, co: 0.55, clouds: 4.0}, matches: T_early}
+  - {grid: exorem, params: {teff: 500, logg: 5.0, mh: 0.0, co: 0.55, clouds: 4.0}, matches: T_late_Y}
+
+sources:
+  diamondback:
+    local_dir: "../data/model_grids/diamondback/spectra"      # relative to the repo root
+    citation: "Morley et al. 2024 (Sonora Diamondback)"
+    url: "https://doi.org/10.5281/zenodo.12735103"
+  exorem:
+    local_dir: "../data/model_grids/Exo-REMk26/Med_Res_grid_2026"
+    citation: "Exo-REM 2026 medium-resolution cloudy f_sed grid (Radcliffe et al. 2026)"
+    url: "https://lesia.obspm.fr/exorem/YGP_grids/Exo-REMk26/Med_Res_grid_2026/"
+  flameskimmer:
+    local_dir: "../data/model_grids/flameskimmer/R30000/deq"   # tidied by src/organize_flameskimmer.py
+    citation: "Flame Skimmer grid, arXiv:2608.06454"
+    url: "https://doi.org/10.5281/zenodo.20030439"
