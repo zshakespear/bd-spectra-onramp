@@ -157,7 +157,7 @@ def load_sequence(types=None, sequence="field"):
 def list_models(**filters):
     """Table of the model spectra in ``data/models``.
 
-    Keyword filters select rows, e.g. ``list_models(grid="diamondback", fiducial="L")``.
+    Keyword filters select rows, e.g. ``list_models(grid="diamondback", baseline="L")``.
     """
     cat = _catalog(MODEL_DIR, "model", "scripts/build_model_library.py")
     for k, v in filters.items():
@@ -183,21 +183,21 @@ def load_model(model_id):
     return read_spectrum(MODEL_DIR / rows.iloc[0]["file"])
 
 
-def load_sweep(fiducial, parameter):
-    """Models in which only ``parameter`` changes around a fiducial model.
+def load_sweep(baseline, parameter):
+    """Models in which only ``parameter`` changes around a baseline model.
 
-    Returns ``(fiducial_spectrum, [spectra sorted by the parameter])``.
+    Returns ``(baseline_spectrum, [spectra sorted by the parameter])``.
     ``parameter`` is one of: "teff", "logg", "mh", "clouds", "kzz".
     """
-    cat = list_models(fiducial=fiducial)
+    cat = list_models(baseline=baseline)
     if cat.empty:
-        raise MissingDataError(f"No models for fiducial '{fiducial}'.")
-    fid_rows = cat[cat["sweep"] == "fiducial"]
+        raise MissingDataError(f"No models for baseline '{baseline}'.")
+    fid_rows = cat[cat["sweep"] == "baseline"]
     if fid_rows.empty:
-        raise MissingDataError(f"The fiducial model for '{fiducial}' is missing from the library.")
+        raise MissingDataError(f"The baseline model for '{baseline}' is missing from the library.")
     sweep = cat[cat["sweep"] == parameter]
     if sweep.empty:
-        raise MissingDataError(f"No '{parameter}' sweep was built for fiducial '{fiducial}'.")
+        raise MissingDataError(f"No '{parameter}' sweep was built for baseline '{baseline}'.")
     fid = read_spectrum(MODEL_DIR / fid_rows.iloc[0]["file"])
     members = [read_spectrum(MODEL_DIR / f) for f in sweep["file"]] + [fid]
 

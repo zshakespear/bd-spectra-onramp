@@ -4,7 +4,7 @@
 
 **Check these before interpreting any feature.** Even the reference spectra, after strict flag cuts and a 4σ
 running-median clip, contain some spurious points, and early data are underflagged (Rustamkulov et al. 2026).
-Candidate spectra are cleaned unevenly. Run `print(bd.quality_report(spec))` — it flags, never deletes.
+Spectra from different sources are cleaned unevenly. Run `print(bd.quality_report(spec))` — it flags, never deletes.
 
 | Problem | What it looks like | Check |
 |---|---|---|

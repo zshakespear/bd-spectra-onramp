@@ -6,8 +6,8 @@
 # mh: 0.0
 # co: 1.0
 # kzz: 4
-# fiducial: T_late_Y
-# sweep: fiducial
+# baseline: T_late_Y
+# sweep: baseline
 # surface_flux: true
 # grid_citation: "Flame Skimmer grid, arXiv:2608.06454"
 # grid_url: "https://doi.org/10.5281/zenodo.20030439"

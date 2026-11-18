@@ -6,7 +6,7 @@
 # mh: 0.0
 # co: 1.0
 # kzz: 2
-# fiducial: T_late_Y
+# baseline: T_late_Y
 # sweep: kzz
 # surface_flux: true
 # grid_citation: "Flame Skimmer grid, arXiv:2608.06454"

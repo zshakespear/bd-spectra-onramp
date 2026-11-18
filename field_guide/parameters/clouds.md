@@ -2,8 +2,10 @@
 
 [← Parameters](README.md) · [notebook 5 §5](../../notebooks/05_global_parameters.ipynb)
 
-**What it is.** In the Sonora Diamondback grid, clouds are set by the sedimentation efficiency f<sub>sed</sub>:
-small f<sub>sed</sub> = thick, vertically extended clouds; large f<sub>sed</sub> = thin, compact clouds; "nc" = cloud-free.
+**What it is.** In the Sonora Diamondback grid, clouds are set by the sedimentation efficiency f<sub>sed</sub>: how
+quickly cloud particles settle, or **rain out**, against the gas that lifts them. Large f<sub>sed</sub> = particles grow big
+and rain out fast → thin, compact clouds. Small f<sub>sed</sub> = particles stay small and aloft → thick clouds that extend
+high up. "nc" = cloud-free.
 Exo-REM also varies f<sub>sed</sub>. Flame Skimmer is cloud-free.
 
 **What it changes.** Clouds block the deep layers that the windows look into, so the window peaks (Y, J, H)

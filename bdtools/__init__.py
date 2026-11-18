@@ -20,7 +20,7 @@ Indices      compute_index, index_table, index_difference
 Quality      quality_report, running_median_outliers, find_gaps
 Plotting     plot_spectrum, plot_comparison, plot_index_windows, plot_index_plane,
              plot_parameter_stack, plot_contribution_function, molecule_color,
-             plot_chi2_map, plot_fit_parameters, plot_fit_residuals
+             plot_chi2_map, plot_fit_parameters, plot_fit_residuals, shade_bands, add_band_key
 """
 
 from .binning import (at_spherex_resolution, bin_mean, bin_to_spectrum, edges_from_centers, log_wavelength_grid,
@@ -33,7 +33,7 @@ from .io import (list_models, list_references, list_toys, load_model, load_refer
                  load_sweep, load_toy, models_available, read_spectrum, references_available,
                  write_spectrum)
 from .planck import blackbody_surface_flux, brightness_temperature, planck_lambda, wien_peak_um
-from .plotting import (LINE_COLORS, draw_molecule_bars, load_bands, molecule_color,
+from .plotting import (LINE_COLORS, add_band_key, draw_molecule_bars, load_bands, molecule_color,
                        plot_chi2_map, plot_comparison, plot_contribution_function, plot_fit_parameters,
                        plot_fit_residuals, plot_index_plane, plot_index_windows,
                        plot_parameter_stack, plot_spectrum, setup_style, shade_bands)

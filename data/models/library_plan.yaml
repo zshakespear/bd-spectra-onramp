@@ -3,8 +3,8 @@
 # STATUS: APPROVED 2026-11-16; T_late_Y enabled 2026-11-17 with the Flame Skimmer Teff it has. build_model_library.py
 # refuses to run until `approved: true`.
 #
-# For each fiducial, one parameter is changed at a time; every other
-# parameter stays at the fiducial value. Only grid points that exist are used
+# For each baseline, one parameter is changed at a time; every other
+# parameter stays at the baseline value. Only grid points that exist are used
 # (the script stops with a list of missing files otherwise).
 #
 # Parameter names and units are bdtools' own; each grid's reader translates:
@@ -14,10 +14,10 @@
 #   clouds  Diamondback: f_sed (1, 2, 3, 4, 8) or "nc" (cloud-free)
 #           Exo-REM:     f_sed values from its grid list
 #   kzz   log10 Kzz [cm^2 s^-1]   (no grid with a Kzz axis yet; the instructor
-#         will add one -- then add `kzz:` sweeps to the fiducials it covers)
+#         will add one -- then add `kzz:` sweeps to the baselines it covers)
 #   co    C/O: absolute for Exo-REM; relative to solar (0.458) for Flame Skimmer
 #
-# A fiducial with `pending: true` is kept in the plan but skipped by the build.
+# A baseline with `pending: true` is kept in the plan but skipped by the build.
 #
 # Grid facts below were read from the local files and MUST be confirmed
 # against each grid's paper / Zenodo record (see README "Open questions").
@@ -26,7 +26,7 @@ approved: true            # approved by the instructor 2026-11-16; T_late_Y adde
 resolution: 500          # store at R ~ 500; notebooks bin to each spectrum's channels
 wave_range_um: [0.65, 5.3]
 
-fiducials:
+baselines:
   L:
     description: "Mid/late L dwarf, cloudy"
     grid: diamondback

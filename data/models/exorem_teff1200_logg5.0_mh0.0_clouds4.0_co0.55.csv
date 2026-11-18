@@ -6,7 +6,7 @@
 # mh: 0.0
 # co: 0.55
 # clouds: 4.0
-# fiducial: T_early
+# baseline: T_early
 # sweep: cross_grid
 # surface_flux: true
 # grid_citation: Exo-REM 2026 medium-resolution cloudy f_sed grid (Radcliffe et al. 2026)

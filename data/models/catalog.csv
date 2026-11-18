@@ -1,6 +1,7 @@
 # Model library catalog, written by scripts/build_model_library.py on 2026-11-17T22:17:46+00:00.
-id,file,grid,fiducial,sweep,sweep_value,teff,logg,mh,clouds,kzz,co
-diamondback_teff1600_logg5.0_mh0.0_clouds2,diamondback_teff1600_logg5.0_mh0.0_clouds2.csv,diamondback,L,fiducial,nan,1600,5.0,0.0,2,,
+# 2026-11-18: column and sweep value "fiducial" renamed "baseline" (instructor request; model file headers renamed too).
+id,file,grid,baseline,sweep,sweep_value,teff,logg,mh,clouds,kzz,co
+diamondback_teff1600_logg5.0_mh0.0_clouds2,diamondback_teff1600_logg5.0_mh0.0_clouds2.csv,diamondback,L,baseline,nan,1600,5.0,0.0,2,,
 diamondback_teff1300_logg5.0_mh0.0_clouds2,diamondback_teff1300_logg5.0_mh0.0_clouds2.csv,diamondback,L,teff,1300,1300,5.0,0.0,2,,
 diamondback_teff1400_logg5.0_mh0.0_clouds2,diamondback_teff1400_logg5.0_mh0.0_clouds2.csv,diamondback,L,teff,1400,1400,5.0,0.0,2,,
 diamondback_teff1500_logg5.0_mh0.0_clouds2,diamondback_teff1500_logg5.0_mh0.0_clouds2.csv,diamondback,L,teff,1500,1500,5.0,0.0,2,,
@@ -18,7 +19,7 @@ diamondback_teff1600_logg5.0_mh0.0_clouds3,diamondback_teff1600_logg5.0_mh0.0_cl
 diamondback_teff1600_logg5.0_mh0.0_clouds4,diamondback_teff1600_logg5.0_mh0.0_clouds4.csv,diamondback,L,clouds,4,1600,5.0,0.0,4,,
 diamondback_teff1600_logg5.0_mh0.0_clouds8,diamondback_teff1600_logg5.0_mh0.0_clouds8.csv,diamondback,L,clouds,8,1600,5.0,0.0,8,,
 diamondback_teff1600_logg5.0_mh0.0_cloudsnc,diamondback_teff1600_logg5.0_mh0.0_cloudsnc.csv,diamondback,L,clouds,nc,1600,5.0,0.0,nc,,
-diamondback_teff1200_logg5.0_mh0.0_clouds4,diamondback_teff1200_logg5.0_mh0.0_clouds4.csv,diamondback,T_early,fiducial,nan,1200,5.0,0.0,4,,
+diamondback_teff1200_logg5.0_mh0.0_clouds4,diamondback_teff1200_logg5.0_mh0.0_clouds4.csv,diamondback,T_early,baseline,nan,1200,5.0,0.0,4,,
 diamondback_teff900_logg5.0_mh0.0_clouds4,diamondback_teff900_logg5.0_mh0.0_clouds4.csv,diamondback,T_early,teff,900,900,5.0,0.0,4,,
 diamondback_teff1000_logg5.0_mh0.0_clouds4,diamondback_teff1000_logg5.0_mh0.0_clouds4.csv,diamondback,T_early,teff,1000,1000,5.0,0.0,4,,
 diamondback_teff1100_logg5.0_mh0.0_clouds4,diamondback_teff1100_logg5.0_mh0.0_clouds4.csv,diamondback,T_early,teff,1100,1100,5.0,0.0,4,,
@@ -34,7 +35,7 @@ diamondback_teff1200_logg5.0_mh0.0_clouds2,diamondback_teff1200_logg5.0_mh0.0_cl
 diamondback_teff1200_logg5.0_mh0.0_clouds3,diamondback_teff1200_logg5.0_mh0.0_clouds3.csv,diamondback,T_early,clouds,3,1200,5.0,0.0,3,,
 diamondback_teff1200_logg5.0_mh0.0_clouds8,diamondback_teff1200_logg5.0_mh0.0_clouds8.csv,diamondback,T_early,clouds,8,1200,5.0,0.0,8,,
 diamondback_teff1200_logg5.0_mh0.0_cloudsnc,diamondback_teff1200_logg5.0_mh0.0_cloudsnc.csv,diamondback,T_early,clouds,nc,1200,5.0,0.0,nc,,
-flameskimmer_teff500_logg5.0_mh0.0_kzz4_co1.0,flameskimmer_teff500_logg5.0_mh0.0_kzz4_co1.0.csv,flameskimmer,T_late_Y,fiducial,nan,500,5.0,0.0,,4,1.0
+flameskimmer_teff500_logg5.0_mh0.0_kzz4_co1.0,flameskimmer_teff500_logg5.0_mh0.0_kzz4_co1.0.csv,flameskimmer,T_late_Y,baseline,nan,500,5.0,0.0,,4,1.0
 flameskimmer_teff525_logg5.0_mh0.0_kzz4_co1.0,flameskimmer_teff525_logg5.0_mh0.0_kzz4_co1.0.csv,flameskimmer,T_late_Y,teff,525,525,5.0,0.0,,4,1.0
 flameskimmer_teff550_logg5.0_mh0.0_kzz4_co1.0,flameskimmer_teff550_logg5.0_mh0.0_kzz4_co1.0.csv,flameskimmer,T_late_Y,teff,550,550,5.0,0.0,,4,1.0
 flameskimmer_teff500_logg4.0_mh0.0_kzz4_co1.0,flameskimmer_teff500_logg4.0_mh0.0_kzz4_co1.0.csv,flameskimmer,T_late_Y,logg,4.0,500,4.0,0.0,,4,1.0

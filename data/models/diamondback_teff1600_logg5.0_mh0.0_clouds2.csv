@@ -5,8 +5,8 @@
 # logg: 5.0
 # mh: 0.0
 # clouds: 2
-# fiducial: L
-# sweep: fiducial
+# baseline: L
+# sweep: baseline
 # surface_flux: true
 # grid_citation: Morley et al. 2024 (Sonora Diamondback)
 # grid_url: "TO CONFIRM: Zenodo record for Sonora Diamondback"

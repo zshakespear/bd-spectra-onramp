@@ -168,7 +168,7 @@ def rank_templates(data, templates, **kwargs):
 def ratio_to(spectrum, reference):
     """Ratio of two spectra on ``reference``'s wavelengths (no scaling, no errors).
 
-    Used for parameter sweeps in notebook 5 (model / fiducial model), where both
+    Used for parameter sweeps in notebook 5 (model / baseline model), where both
     spectra are already on the same wavelengths. If they are not, ``spectrum``
     is interpolated onto ``reference``'s wavelengths.
     """

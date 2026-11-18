@@ -10,9 +10,9 @@
 | clouds (f<sub>sed</sub>) | [clouds.md](clouds.md) | dim, redden, and smooth the windows |
 | mixing (K<sub>zz</sub>) | [mixing.md](mixing.md) | CO/CO<sub>2</sub> vs CH<sub>4</sub> in cold atmospheres |
 
-**Before you trust any best-fit parameter:** the best fits typically have reduced χ² ≥ 10 at high S/N, and
-different grids with the same parameters differ by up to ~2× at some wavelengths (Rustamkulov et al. 2026).
-Treat parameters as rough.
+**Before you trust any best-fit parameter:** even the best-matching model rarely reproduces a real spectrum within
+its uncertainties (notebook 6), and different grids with the same parameters differ by up to ~2× at some wavelengths
+(Rustamkulov et al. 2026). Treat parameters as rough.
 
-**Degeneracies:** many changes look alike in some bands (e.g. cooler vs higher gravity). Look for the bands
-where they differ. Unresolved **binarity** can mimic a parameter change too.
+**Degeneracies:** when two parameter changes alter the spectrum in nearly the same way, the data cannot tell them
+apart (e.g. cooler vs higher gravity in some bands). Look for the bands where they differ. Unresolved **binarity** can mimic a parameter change too.

@@ -5,7 +5,7 @@
 # logg: 5.0
 # mh: 0.0
 # clouds: nc
-# fiducial: T_early
+# baseline: T_early
 # sweep: clouds
 # surface_flux: true
 # grid_citation: Morley et al. 2024 (Sonora Diamondback)

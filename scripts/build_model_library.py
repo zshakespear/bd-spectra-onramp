@@ -64,14 +64,14 @@ def g_si_from_logg(logg):
 
 
 def model_points(plan):
-    """Every (fiducial, sweep, value, grid, params) the plan asks for."""
+    """Every (baseline, sweep, value, grid, params) the plan asks for."""
     pts = []
-    pending = {fid for fid, spec in plan["fiducials"].items() if spec.get("pending")}
-    for fid, spec in plan["fiducials"].items():
+    pending = {fid for fid, spec in plan["baselines"].items() if spec.get("pending")}
+    for fid, spec in plan["baselines"].items():
         if fid in pending:
             continue
         base = dict(spec["params"])
-        pts.append((fid, "fiducial", None, spec["grid"], base))
+        pts.append((fid, "baseline", None, spec["grid"], base))
         for par, values in (spec.get("sweeps") or {}).items():
             for v in values:
                 p = dict(base)
@@ -254,13 +254,13 @@ def main():
     with open(args.plan, encoding="utf-8") as fh:
         plan = yaml.safe_load(fh)
     if not plan.get("approved") and not args.check:
-        sys.exit("library_plan.yaml is not approved yet (approved: false). Review the fiducials and sweeps,\n"
+        sys.exit("library_plan.yaml is not approved yet (approved: false). Review the baselines and sweeps,\n"
                  "set approved: true, then run again. Use --check to see which grid points exist.")
     out = Path(args.out)
     src = plan["sources"]
-    for fid, spec in plan["fiducials"].items():
+    for fid, spec in plan["baselines"].items():
         if spec.get("pending"):
-            print(f"Skipping fiducial {fid}: pending ({spec.get('pending_reason', 'see plan')}).")
+            print(f"Skipping baseline {fid}: pending ({spec.get('pending_reason', 'see plan')}).")
     points = [pt for pt in model_points(plan) if not args.only or pt[3] == args.only]
     reader_classes = {"diamondback": Diamondback, "exorem": ExoREM, "flameskimmer": FlameSkimmer}
     readers = {g: reader_classes[g](src[g]["local_dir"]) for g in {pt[3] for pt in points}}
@@ -294,7 +294,7 @@ def main():
         mid = model_id(grid, p)
         label = f"{grid} " + ", ".join(f"{k}={v}" for k, v in p.items())
         meta = {"kind": "model", "grid": grid, **{k: (str(v) if k == "clouds" else v) for k, v in p.items()},
-                "fiducial": fid, "sweep": sweep, "surface_flux": True,
+                "baseline": fid, "sweep": sweep, "surface_flux": True,
                 "grid_citation": src[grid]["citation"], "grid_url": src[grid]["url"],
                 "original_file": Path(f).name, "resolution": plan["resolution"],
                 "author": getpass.getuser(), "date_created": now,
@@ -304,8 +304,8 @@ def main():
         spec = Spectrum(c, mean, None, "W/m2/um", label, meta)
         fname = f"{mid}.csv"
         write_spectrum(spec, out / fname)
-        rows.append({"id": mid, "file": fname, "grid": grid, "fiducial": fid, "sweep": sweep,
-                     "sweep_value": p.get(sweep, val) if sweep not in ("fiducial", "cross_grid") else "",
+        rows.append({"id": mid, "file": fname, "grid": grid, "baseline": fid, "sweep": sweep,
+                     "sweep_value": p.get(sweep, val) if sweep not in ("baseline", "cross_grid") else "",
                      **{k: p.get(k, "") for k in ["teff", "logg", "mh", "clouds", "kzz", "co"]}})
         print(f"  wrote {fname}")
     cat = pd.DataFrame(rows)

@@ -13,5 +13,8 @@ absorption, especially H<sub>2</sub> collision-induced absorption (broad, ~1.7â€
 - weaker water features;
 - a taller K peak relative to H.
 
+**Hard to fit.** Gravity's effects are modest and other parameters can produce similar ones â€” it is often
+**degenerate** with them (the data cannot tell the changes apart). Expect a fitted log g to be uncertain.
+
 **What can mimic it.** Temperature (cooler vs higher gravity can look alike in some bands), metallicity
 (also acts through H<sub>2</sub> CIA), clouds (a red, taller K peak).

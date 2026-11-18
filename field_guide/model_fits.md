@@ -18,10 +18,10 @@
 | ratio panel | Where is the data brighter / fainter than the model? Inside which absorber band? The look depends on the scaling. |
 | significance panel | Points beyond ±3σ. Clusters inside a band = a feature; isolated single points = check for a [data problem](data_problems.md). |
 
-**Is it the object or the models?** Fit the **named template** (the reference of the candidate's type) with the same grid
+**Is it the object or the models?** Fit the **template** (the reference spectrum of the object's type) with the same grid
 and compare residuals (`bd.plot_fit_residuals`).
 - Residual shared with the template → a **model problem**.
-- Residual only the candidate shows → worth explaining: temperature, gravity, metallicity, clouds, mixing, binarity,
+- Residual only your object shows → worth explaining: temperature, gravity, metallicity, clouds, mixing, binarity,
   or a data problem ([global parameters](parameters/README.md)).
 
 **Code**
