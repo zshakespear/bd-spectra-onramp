@@ -94,18 +94,24 @@ def draw_molecule_bars(ax, absorbers=None, include_uncertain=False, xlim=None):
 
 
 BAND_ALPHA = 0.13
+HATCH_ALPHA = 0.45    # strength of hatched bands (H2 CIA); hatching is thin, so it can be stronger than a fill
 TITLE_PAD_WITH_KEY = 24      # points: room for the absorption-band key between the axes and the title
 
 
 def shade_bands(ax, absorbers=None, include_uncertain=False, alpha=BAND_ALPHA):
     """Shade absorption bands behind the data, in each molecule's colour.
 
-    Uncertain bands (only drawn when ``include_uncertain``) are hatched.
+    Uncertain bands (only drawn when ``include_uncertain``) are hatched. An absorber with a
+    ``hatch`` entry in bands.yaml (H2 CIA) is drawn as hatching only, with no fill, so the
+    bands underneath keep their colours.
     """
     names, ab = _select_absorbers(absorbers, include_uncertain)
     for name in names:
         for b in ab[name]["bands"]:
-            if b.get("status") == "uncertain":
+            if ab[name].get("hatch"):
+                ax.axvspan(*b["range_um"], facecolor="none", edgecolor=ab[name]["color"], alpha=HATCH_ALPHA,
+                           lw=0, hatch=ab[name]["hatch"], zorder=0)
+            elif b.get("status") == "uncertain":
                 ax.axvspan(*b["range_um"], facecolor=ab[name]["color"], alpha=alpha, lw=0, hatch="//",
                            edgecolor=ab[name]["color"], zorder=0)
             else:
@@ -120,7 +126,9 @@ def add_band_key(ax, absorbers=None, include_uncertain=False):
     """
     names, ab = _select_absorbers(absorbers, include_uncertain)
     handles = [Patch(facecolor="none", edgecolor="none", label="Shaded = absorption bands:")]
-    handles += [Patch(facecolor=ab[n]["color"], edgecolor=ab[n]["color"], alpha=0.45, label=ab[n].get("label", n))
+    handles += [Patch(facecolor="none", edgecolor=ab[n]["color"], hatch=ab[n]["hatch"], lw=0,
+                      label=ab[n].get("label", n)) if ab[n].get("hatch") else
+                Patch(facecolor=ab[n]["color"], edgecolor=ab[n]["color"], alpha=0.45, label=ab[n].get("label", n))
                 for n in names]
     key = Legend(ax, handles, [h.get_label() for h in handles], loc="lower left", bbox_to_anchor=(0.0, 1.0),
                  ncol=len(handles), frameon=False, fontsize=8, handlelength=1.1, handletextpad=0.4,

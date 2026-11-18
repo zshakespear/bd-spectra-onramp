@@ -115,11 +115,22 @@ def main():
         r, _ = run(wave, "eddington", mult, store_cf=False)
         fl.append(r["flux"])
     fl = np.array(fl)
+    # ... and each absorber on its own (continuum + that absorber), with "none" = continuum only
+    alone_labels = ["none"] + [f"only {a}" for a in toy.ABSORBERS]
+    al = []
+    for lab in alone_labels:
+        keep = None if lab == "none" else lab[5:]
+        r, _ = run(wave, "eddington", {a: 0.0 for a in toy.ABSORBERS if a != keep}, store_cf=False)
+        al.append(r["flux"])
+    al = np.array(al)
     save("remove_one", {
         "wave_um": wave, "labels": np.array(labels), "flux": fl,
         "spherex_wave_um": sx_w, "spherex_flux": np.array([bin_sx(f) for f in fl]),
-    }, provenance("Standard profile with all toy absorbers, then with each one removed in turn.",
-                  absorbers=toy.ABSORBERS))
+        "alone_labels": np.array(alone_labels), "alone_flux": al,
+        "alone_spherex_flux": np.array([bin_sx(f) for f in al]),
+    }, provenance("Standard profile with all toy absorbers, then with each one removed in turn "
+                  "('labels', 'flux'); and the continuum alone plus each absorber on its own "
+                  "('alone_labels', 'alone_flux').", absorbers=toy.ABSORBERS))
 
     # --- temperature change vs absorber change ------------------------------------------
     rows, labs = [], []

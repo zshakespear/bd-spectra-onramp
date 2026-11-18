@@ -14,6 +14,8 @@
 #                  uncertain : listed by Cushing et al. 2005, but whether SPHEREx (R ~ 40) separates it
 #                              is itself uncertain; hidden from plots unless asked for
 #   source    -- where the numbers come from
+# An absorber may also set `hatch` (a matplotlib hatch pattern): its bands are then drawn as hatching with
+# no fill. Used for H2 CIA, which is broad and lies on top of other bands.
 #
 # Scope (instructor, 2026-11-17): only bands in Cushing et al. 2005 or Rustamkulov et al. 2026 are kept;
 # this atlas is for learning the technique, not a complete line list. Removed: K I (0.75-0.90 um red
@@ -66,6 +68,7 @@ absorbers:
     color: "#999999"
     show_by_default: true
     note: "Collision-induced absorption by H2: broad, no sharp edges. Stronger at high gravity and low metallicity."
+    hatch: "xx"   # drawn as grey cross-hatching, not a fill, so the bands it overlaps keep their colours
     bands:
       - {range_um: [1.70, 3.00], types: "L T Y (strongest in low-metallicity and high-gravity objects)", status: spec, source: "Rustamkulov et al. 2026 Sec. 3 (low-metallicity sequence); Cushing et al. 2005 give the 1-0 band as 1.8-2.8 um", overlaps: "H2O, CH4, CO in the same range"}
   FeH:

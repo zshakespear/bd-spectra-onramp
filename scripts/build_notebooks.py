@@ -140,7 +140,7 @@ or stay idle for a while, it is wiped. Two consequences:
         setup_cell(owner),
         md("""
 If the last line says `bdtools … ready`, you are set up. `bd` is the small helper library
-for this course; `np` is numpy (numbers) and `plt` is matplotlib (plots).
+for these notebooks; `np` is numpy (numbers) and `plt` is matplotlib (plots).
 
 ## 2. What a spectrum file holds
 
@@ -403,8 +403,6 @@ T<sub>b</sub> with wavelength in a real spectrum is information about the atmosp
          "Brightness temperature lets you compare wavelengths fairly; high T<sub>b</sub> = seeing deep, low T<sub>b</sub> = seeing high."],
         [("Why is SPHEREx's whole range on the steep side of the Planck curve for a Y dwarf?",
           "Its temperature is below ~580 K, so the Wien peak is beyond 5 µm."),
-         ("A 10% hotter blackbody is about how many times brighter at 1.25 µm? At 4.5 µm?",
-          "About 2.8× at 1.25 µm and about 1.3× at 4.5 µm."),
          ("What two numbers do you need to turn observed flux into surface flux, and which is assumed?",
           "Distance (measured from parallax) and radius (assumed, ~1 R<sub>Jup</sub>)."),
          ("What does a low brightness temperature at some wavelength tell you?",
@@ -421,6 +419,7 @@ def nb02(owner):
         header(owner, f, "2 · Opacity and the photosphere", [
             "describe a brown dwarf atmosphere as a temperature–pressure profile with no surface",
             "explain optical depth and the τ ≈ 2/3 photosphere, and what the flux at a wavelength tells you about temperature",
+            "explain why optical depth depends on wavelength, and what a band's core and wings are",
             "read a contribution function",
             "predict the spectrum of an isothermal atmosphere and of one with a thermal inversion",
             "explain why an absorption band stops deepening (saturates)",
@@ -456,8 +455,10 @@ probability about e<sup>−τ</sup>. So:
 * layers with τ ≪ 1 emit too little to matter (too little gas);
 * most escaping light comes from around **τ ≈ 2/3** — call that the **photosphere**.
 
-Crucially, τ depends on wavelength. At a wavelength where a molecule absorbs strongly, τ = 2/3 is
-reached *high up*; in a "window" with little absorption, we see *deep*.
+**Why τ depends on wavelength.** Each kind of atom or molecule absorbs light only at certain wavelengths, set by the
+ways it can rotate and vibrate. Water, for example, absorbs strongly near 1.4 µm but only weakly near 1.27 µm. A
+range of wavelengths where a molecule absorbs strongly is called a **band**. So τ depends on wavelength: inside a
+band, τ = 2/3 is reached *high up*; in a **window** between bands, where little absorbs, we see *deep*.
 
 **What the flux tells you:** the flux at each wavelength tells you the approximate **temperature of the layer
 where τ = 2/3** at that wavelength. A hot layer gives a lot of flux; a cool layer gives little.
@@ -474,6 +475,46 @@ ax.set_xlabel("Wavelength [µm]"); ax.set_ylabel("pressure where τ = 2/3 [bar]\
 ax.set_title("TOY: where each wavelength's light comes from", fontsize=10);
 """),
         md("""
+### A band's core and wings
+A band absorbs most strongly at its **core**. Away from the core the absorption gets weaker, but it does not stop
+abruptly: the weaker absorption on either side is the band's **wings**, and it can stretch well into a neighbouring
+window. Wings come mainly from **pressure broadening**: molecules that collide often — at high pressure, deep in the
+atmosphere — absorb over a wider range of wavelengths, so the band spreads out.
+
+Here is a single made-up band at two pressures. The top panel shows how strongly it absorbs (its optical depth); the
+bottom panel shows what fraction of the light gets through.
+
+> 🧸 **TOY** — one invented band, to show the shapes. Real bands are many overlapping lines.
+"""),
+        code("""
+lam = np.linspace(1.0, 2.0, 2000)          # microns
+centre = 1.40
+
+def toy_band(width, wing=0.01):
+    x = (lam - centre) / width
+    return np.exp(-0.5 * x**2) + wing / (1 + x**2)     # strong core + weak, wide wings
+
+fig, axes = plt.subplots(2, 1, sharex=True, figsize=(9, 7))
+for width, label, c in [(0.03, "low pressure", bd.LINE_COLORS[1]), (0.06, "high pressure (broadened)", bd.LINE_COLORS[2])]:
+    tau = 300 * toy_band(width)            # optical depth of the band
+    axes[0].plot(lam, tau, color=c, label=label)
+    axes[1].plot(lam, np.exp(-tau), color=c, label=label)
+for ax in axes:
+    ax.axvspan(1.60, 1.75, color="0.85", zorder=0)
+axes[0].set_yscale("log"); axes[0].set_ylim(1e-2, 1e3)
+axes[0].set_ylabel("absorption strength\\n(optical depth τ)"); axes[0].legend(loc="upper left")
+axes[1].set_ylabel("fraction of light\\nthat gets through"); axes[1].set_xlabel("Wavelength [µm]")
+axes[1].text(1.40, 0.06, "core:\\nalmost no light\\ngets through", ha="center", va="bottom", fontsize=9)
+axes[1].annotate("wings: weaker absorption\\nspreading out to the sides", (1.52, 0.6), (1.77, 0.3),
+                 fontsize=9, arrowprops=dict(arrowstyle="->"))
+axes[0].text(1.675, 100, "a neighbouring\\nwindow", ha="center", va="center", fontsize=9, color="0.3")
+axes[0].set_title("TOY: one absorption band, its core and wings", fontsize=10);
+"""),
+        md("""
+The core is so strong that it lets almost nothing through at either pressure. The wings are what change: at high
+pressure they reach further and take out part of the light in the neighbouring window. Notebook 3 shows that this
+is why the height of each window peak depends on the bands next to it.
+
 ### Contribution functions
 The τ = 2/3 level is a shorthand. The **contribution function** shows *how much* light at each
 wavelength comes from each layer (dark = most). The cyan line is the τ = 2/3 level.
@@ -497,7 +538,7 @@ ax.set_title("TOY: brightness temperature vs temperature at τ = 2/3", fontsize=
 """),
         md("""
 Over most of the spectrum the two curves track each other closely: **brightness temperature ≈ temperature of
-the layer you see.** That is the bridge between notebook 1 and the rest of the course.
+the layer you see.** That is the bridge between notebook 1 and the rest of these notebooks.
 
 Where they disagree — the short-wavelength windows, below about 2 µm — the spectrum is *hotter* than the τ = 2/3
 layer. Notebook 1 explains why: on the steep side of the Planck curve, slightly deeper (hotter) layers are so much
@@ -523,8 +564,20 @@ axes[0].set_title("TOY: standard vs isothermal", fontsize=10);
 """),
         md("""
 No features at all — the isothermal toy is exactly a 1000 K blackbody, even though its absorbers are
-just as strong. Absorption only makes a **band** when the layer you see in the band has a *different
-temperature* from the layer you see in the window. **Spectral features need a temperature gradient.**
+just as strong.
+
+**Why?** Follow the light at a band wavelength as it climbs out. Light from a deep layer is partly absorbed by the
+layer above it. But a layer that absorbs at some wavelength also **emits** at that wavelength, and how much it emits
+depends only on its temperature (the Planck curve, notebook 1). If that layer has the *same* temperature as the one
+below, it emits exactly as much light as it absorbed: the light the absorber took out is replaced, one for one.
+Repeat that layer by layer and nothing is lost, however strong the absorber.
+
+Now let the temperature fall with height, as in the standard toy. Each layer is cooler than the one below, so it
+emits *less* than it absorbs. In a band we see a high, cool layer, so less light comes out than in a window, where we
+see a deep, hot layer — a trough. The bigger the temperature difference between those two layers, the deeper the band.
+
+So absorption only makes a **band** when the layer you see in the band has a *different temperature* from the layer
+you see in the window. **Spectral features need a temperature gradient.**
 
 ## 4. Thought experiment: a thermal inversion
 
@@ -590,7 +643,7 @@ Two lessons, both true of real atmospheres too:
    more absorber barely changes anything: the band is **saturated**. Strong real bands — CH<sub>4</sub> at 3.3 µm in
    cold dwarfs, for example — barely respond to changes in absorber amount.
 
-That is why in this course we say a band shows **more absorption**, not "more abundance": a deeper band
+That is why in these notebooks we say a band shows **more absorption**, not "more abundance": a deeper band
 can come from more molecules, a different temperature profile, or both, and a saturated band can hide a
 big change in the amount of a molecule.
 """),
@@ -623,13 +676,14 @@ plot). The band is saturated at large multipliers.
     cells += footer(
         ["There is no surface: we see light from the layer where τ ≈ 2/3, and that depth depends on wavelength.",
          "The flux at a wavelength tells you the approximate temperature at that wavelength's τ = 2/3 level.",
-         "No temperature gradient → no features. A thermal inversion turns strong bands into emission.",
+         "τ depends on wavelength because each molecule absorbs in its own bands. A band has a strong core and weaker wings; pressure broadening spreads the wings further.",
+         "No temperature gradient → no features: each layer re-emits what it absorbs. A thermal inversion turns strong bands into emission.",
          "Band depth grows roughly with the log of the absorber amount, then saturates.",
          "Field guide: [Glossary](../field_guide/glossary.md)"],
         [("What does τ = 2/3 mean physically?",
           "The depth from which a typical escaping photon comes; deeper light is mostly absorbed on the way out."),
          ("Why does an isothermal atmosphere show no absorption bands?",
-          "Every layer emits the same B<sub>λ</sub>(T), so it doesn't matter which layer you see."),
+          "Every layer emits exactly as much light as it absorbs (all at the same B<sub>λ</sub>(T)), so it doesn't matter which layer you see."),
          ("What turns an absorption band into an emission feature?",
           "A thermal inversion: the layer seen in the band is hotter than the layer seen in the windows."),
          ("Why might a band barely change when a molecule's amount changes by 10×?", "It is saturated.")],
@@ -644,7 +698,7 @@ def nb03(owner):
         header(owner, f, "3 · The band atlas", [
             "name the absorbers that shape a brown dwarf spectrum between 0.75 and 5 µm, and where they act",
             "read plots with the absorption bands shaded",
-            "define a band, a window, a band's core and wings, and collision-induced absorption",
+            "define collision-induced absorption, and read an absorber's footprint",
             "explain two traps: overlapping bands, and band wings reaching into windows",
             "explain why band depth tracks absorption, not abundance",
         ], 35),
@@ -674,13 +728,14 @@ pd.DataFrame(rows)
 (Rustamkulov et al. 2026), so don't go looking for it. Uncertain rows are hidden from plots unless you ask.
 
 ### Words we will use
-* A **band** is a range of wavelengths where a molecule absorbs strongly. It shows up as a **trough** in the spectrum.
+* A **band** (notebook 2) is a range of wavelengths where a molecule absorbs strongly. It shows up as a **trough** in the spectrum.
 * A **window** is a range *between* bands where little absorbs. There we see deep, hot layers, so the spectrum
   **peaks** — the Y, J, H, K and 4 µm peaks are all windows.
 * **H<sub>2</sub> collision-induced absorption (CIA).** A single H<sub>2</sub> molecule barely absorbs infrared light. But
   while two molecules (H<sub>2</sub>–H<sub>2</sub> or H<sub>2</sub>–He) are colliding, the pair can absorb. Because it needs
   collisions, CIA is strongest where the gas is densest (deep down, and in high-gravity objects). It is broad and
-  smooth, with no sharp edges, spread over roughly 1.7–3 µm.
+  smooth, with no sharp edges, spread over roughly 1.7–3 µm. Because it lies on top of other bands, plots draw it as
+  **grey cross-hatching** rather than a coloured fill.
 """),
         code("""
 # ✏️ SETTINGS YOU CAN CHANGE
@@ -703,32 +758,52 @@ at SPHEREx-like resolution, so the footprints look the way SPHEREx would see the
 """),
         code("""
 r1 = bd.load_toy("remove_one")
-labels = list(r1.labels)
-full = r1.spherex_flux[labels.index("all")]
-others = [lab for lab in labels if lab != "all"]
-fig, axes = plt.subplots(1 + len(others), 1, sharex=True, figsize=(9, 9.5),
-                         gridspec_kw={"height_ratios": [2.2] + [0.75] * len(others), "hspace": 0.12})
-axes[0].plot(r1.spherex_wave_um, full, "k-o", ms=2, label="all toy absorbers")
-for ax, lab in zip(axes[1:], others):
-    f = r1.spherex_flux[labels.index(lab)]
-    name = lab[3:]
+w = r1.spherex_wave_um
+labels, alone_labels = list(r1.labels), list(r1.alone_labels)
+full = r1.spherex_flux[labels.index("all")]                 # every absorber present
+bare = r1.alone_spherex_flux[alone_labels.index("none")]    # no absorbers at all
+names = [lab[3:] for lab in labels if lab != "all"]
+fig, axes = plt.subplots(1 + len(names), 1, sharex=True, figsize=(9, 10),
+                         gridspec_kw={"height_ratios": [2.2] + [0.75] * len(names), "hspace": 0.12})
+axes[0].plot(w, full, "k-o", ms=2, label="all toy absorbers")
+for ax, name in zip(axes[1:], names):
     c = bd.molecule_color(name)
-    axes[0].plot(r1.spherex_wave_um, f, color=c, lw=1.2, label=lab)
-    kept = full / f                      # fraction of the light that gets through this absorber
-    ax.fill_between(r1.spherex_wave_um, kept, 1, color=c, alpha=0.5, lw=0)
-    ax.plot(r1.spherex_wave_um, kept, color=c, lw=1.2)
+    without = r1.spherex_flux[labels.index("no " + name)]
+    axes[0].plot(w, without, color=c, lw=1.2, label="no " + name)
+    on_its_own = r1.alone_spherex_flux[alone_labels.index("only " + name)] / bare
+    with_others = full / without         # fraction of the light that still gets through once it is added
+    ax.plot(w, on_its_own, "--", color=c, lw=1.2)
+    ax.fill_between(w, with_others, 1, color=c, alpha=0.5, lw=0)
+    ax.plot(w, with_others, color=c, lw=1.2)
     ax.set_ylim(0, 1.05); ax.set_yticks([0, 1])
     ax.text(1.01, 0.5, name.replace("_", " "), transform=ax.transAxes, color=c, fontweight="bold", va="center")
 axes[0].set_yscale("log"); axes[0].legend(ncol=3, fontsize=8); axes[0].set_ylabel(r"$F_\\lambda$ (toy)")
-axes[len(others) // 2 + 1].set_ylabel("fraction of light that gets through\\n(filled dip = light this absorber takes out)")
+axes[len(names) // 2 + 1].set_ylabel("fraction of light that gets through")
 axes[-1].set_xlabel("Wavelength [µm]")
+axes[-1].legend(handles=[plt.Line2D([], [], color="0.3", ls="--", label="dashed: this absorber on its own"),
+                         plt.Rectangle((0, 0), 1, 1, color="0.3", alpha=0.5,
+                                       label="filled: extra light it takes out when all the others are there too")],
+                loc="upper center", bbox_to_anchor=(0.5, -0.55), ncol=2, fontsize=9, frameon=False)
 axes[0].set_title("TOY: footprint of each absorber", fontsize=10);
 """),
         md("""
-Each lower row is one absorber's **footprint**: the fraction of the light that still gets through when that
-absorber is added to all the others. **1 = it takes out nothing; a filled dip = light it takes out**, and a dip all the
-way to 0 means it blocks almost all the light there. The top panel shows the same thing as spectra: the coloured
-curves are the spectrum with one absorber removed, and the black curve has all of them.
+Each lower row is one absorber's **footprint**, shown two ways (1 = nothing taken out, 0 = all the light blocked):
+
+* the **dashed line** is the absorber **on its own** — the fraction of light that gets through if it were the only
+  absorber. This is *where it absorbs*.
+* the **filled dip** is the **extra** light it takes out when it is added to all the others. This is *where it changes
+  the spectrum*. The top panel shows the same thing as spectra: each coloured curve is the spectrum with one absorber
+  removed, and the black curve has all of them.
+
+The two differ wherever bands overlap: light that one absorber has already taken out cannot be taken out again.
+**H<sub>2</sub> CIA** shows this best. On its own it absorbs over a broad, smooth range (~1.6–3 µm, dashed). But across
+most of that range H<sub>2</sub>O, CH<sub>4</sub> or CO already block the light, so CIA only makes a difference in the **windows**
+— mostly the K peak near 2.1 µm, and a little at the H peak. That suits CIA: it needs dense gas, and the windows are
+where we see the deepest, densest layers. It is also why the K peak is so sensitive to gravity and metallicity
+(notebook 5).
+
+On the plots of real spectra, H<sub>2</sub> CIA is drawn as **grey cross-hatching** instead of a coloured fill, because it lies on
+top of the other bands.
 
 ## 3. Trap 1 — overlapping bands
 
@@ -743,44 +818,9 @@ Always check the atlas for *every* absorber in a region before naming one.
 
 ## 4. Trap 2 — band wings reach into the windows
 
-### Core, wings and broadening
-A band absorbs most strongly at its **core**. Away from the core the absorption gets weaker, but it does not stop
-abruptly: these weak tails on either side are the band's **wings**, and they can stretch well into a neighbouring
-window. Wings come mainly from **pressure broadening**: molecules that collide often — at high pressure, deep in the
-atmosphere — absorb over a wider range of wavelengths, so the band spreads out.
-
-Here is a single made-up band at two pressures. The top panel shows how strongly it absorbs; the bottom panel shows
-what fraction of the light gets through.
-
-> 🧸 **TOY** — one invented band, to show the shapes. Real bands are many overlapping lines.
-"""),
-        code("""
-lam = np.linspace(1.0, 2.0, 2000)          # microns
-centre = 1.40
-
-def toy_band(width, wing=0.01):
-    x = (lam - centre) / width
-    return np.exp(-0.5 * x**2) + wing / (1 + x**2)     # strong core + weak, wide wings
-
-fig, axes = plt.subplots(2, 1, sharex=True, figsize=(9, 7))
-for width, label, c in [(0.03, "low pressure", bd.LINE_COLORS[1]), (0.06, "high pressure (broadened)", bd.LINE_COLORS[2])]:
-    tau = 300 * toy_band(width)            # optical depth of the band
-    axes[0].plot(lam, tau, color=c, label=label)
-    axes[1].plot(lam, np.exp(-tau), color=c, label=label)
-for ax in axes:
-    ax.axvspan(1.60, 1.75, color="0.85", zorder=0)
-axes[0].set_yscale("log"); axes[0].set_ylim(1e-2, 1e3)
-axes[0].set_ylabel("absorption strength\\n(optical depth τ)"); axes[0].legend(loc="upper left")
-axes[1].set_ylabel("fraction of light\\nthat gets through"); axes[1].set_xlabel("Wavelength [µm]")
-axes[1].text(1.40, 0.06, "core:\\nalmost no light\\ngets through", ha="center", va="bottom", fontsize=9)
-axes[1].annotate("wings: weaker absorption\\nspreading out to the sides", (1.52, 0.6), (1.77, 0.3),
-                 fontsize=9, arrowprops=dict(arrowstyle="->"))
-axes[0].text(1.675, 100, "a neighbouring\\nwindow", ha="center", va="center", fontsize=9, color="0.3")
-axes[0].set_title("TOY: one absorption band, its core and wings", fontsize=10);
-"""),
-        md("""
-The core is so strong that it lets almost nothing through at either pressure (it is *saturated*, notebook 2). The
-wings are what change: at high pressure they reach further and take out part of the light in the neighbouring window.
+Recall from notebook 2: a band absorbs most strongly at its **core**, and its weaker **wings** spread out to either side
+— further at high pressure (**pressure broadening**). The wings of strong bands can reach well into the neighbouring
+windows.
 
 Back to the footprint plot: the dips are not zero in the windows. H<sub>2</sub>O takes out part of the light at the J and H
 peaks too, because the wings of its bands reach into those windows. **The height of a window peak depends on its
@@ -837,7 +877,7 @@ temperature or another global parameter (notebook 5). Real objects often have bo
 
 Real models use **line lists** — laboratory and theoretical catalogues of millions to billions of individual
 molecular transitions (e.g. the ExoMol and HITRAN/HITEMP databases) — and **radiative-transfer codes** that
-compute spectra from them (e.g. PICASO, petitRADTRANS). You will not need them in this course; the model
+compute spectra from them (e.g. PICASO, petitRADTRANS). You will not need them in these notebooks; the model
 grids in notebook 5 were built with tools like these.
 
 ### Exercise 3.1
@@ -857,15 +897,17 @@ short end. Gravity and metallicity change CIA, so they belong on the list of exp
     cells += footer(
         ["H<sub>2</sub>O shapes the whole near-infrared; CH<sub>4</sub> appears at 3–3.6 µm after L4 and defines T dwarfs; CO and CO<sub>2</sub> make notches beyond 4.15 µm; H<sub>2</sub> CIA is broad, ~1.7–3 µm.",
          "Bands are troughs where a molecule absorbs; windows are the peaks between them, where we see deep.",
-         "Footprints show where an absorber takes out light.",
-         "A band has a strong core and weaker wings; pressure broadening spreads the wings into neighbouring windows.",
+         "An absorber's footprint on its own (where it absorbs) is not the same as the extra light it takes out with the others present: overlapping bands share the light.",
+         "H<sub>2</sub> CIA absorbs broadly but matters mostly in the windows, especially the K peak.",
+         "Band wings (notebook 2) reach into neighbouring windows.",
          "Bands overlap, and band wings set the height of window peaks.",
          "Temperature changes many bands at once; one absorber changes only its own bands.",
          "Field guide: [Band atlas](../field_guide/band_atlas.md)"],
-        [("Name the absorbers that could deepen the trough near 1.15 µm in a T dwarf.", "H<sub>2</sub>O and CH<sub>4</sub>."),
-         ("Why can removing H<sub>2</sub>O change the J-peak flux?", "The wings of neighbouring H<sub>2</sub>O bands reach into the J window."),
+        [("Why can removing H<sub>2</sub>O change the J-peak flux?", "The wings of neighbouring H<sub>2</sub>O bands reach into the J window."),
          ("What is H<sub>2</sub> CIA, and why is it stronger in high-gravity objects?",
           "Absorption by pairs of colliding H<sub>2</sub> molecules. It needs collisions, so it is strongest in dense gas — and high gravity means denser gas at the photosphere."),
+         ("H<sub>2</sub> CIA absorbs across ~1.7–3 µm. Why does it change the spectrum mostly at the K peak?",
+          "Elsewhere in that range other absorbers have already taken out the light; at the K window we see deep, dense layers where CIA is the main absorber."),
          ("How does a global (temperature) change look different from a local (one absorber) change in a ratio plot?",
           "A temperature change moves many bands and the overall slope at once; an absorber change is confined to that absorber's bands."),
          ("Why is NH<sub>3</sub> in the atlas but not on the plots?", "It is unlikely to be detectable with SPHEREx (Rustamkulov et al. 2026).")],
@@ -1060,8 +1102,7 @@ after L4 (Rustamkulov et al. 2026). Check the error bars before calling a trend 
          "Key markers: CH<sub>4</sub> after L4; K < H at T0; H < J at T4; CO/CO<sub>2</sub> collapse between T6 and T7; Y dwarfs are detected only beyond ~3.9 µm.",
          "Adjacent subtypes differ by a few percent — judge with uncertainties.",
          "Field guide: [Spectral sequence cheat sheet](../field_guide/spectral_sequence.md)"],
-        [("At which subtype does the K peak drop below the H peak?", "T0 (Rustamkulov et al. 2026)."),
-         ("What happens to the CO and CO<sub>2</sub> indices between T6 and T7?", "They drop sharply (~1000 → 700 K)."),
+        [("What happens to the CO and CO<sub>2</sub> indices between T6 and T7?", "They drop sharply (~1000 → 700 K)."),
          ("Where is the 4 µm peak sharpest?", "At the L/T transition."),
          ("Why do Y-dwarf spectra look empty below ~3.9 µm?", "Too little flux there to be reliably detected by SPHEREx.")],
         "[Notebook 5 · Global atmospheric parameters](05_global_parameters.ipynb)")
@@ -1164,8 +1205,12 @@ Fewer heavy elements → less H<sub>2</sub>O, CH<sub>4</sub>, CO, … but H<sub>
         sweep_cell("T_early", "clouds", "f_sed"),
         md("""
 Thick clouds (small f<sub>sed</sub>) block the deep windows, so the window peaks drop and the spectrum looks redder and
-smoother; cloud-free models have the deepest, brightest windows. Clearing clouds is part of why the J band
-brightens across the L/T transition.
+smoother; cloud-free models have the deepest, brightest windows.
+
+**The L/T transition.** Across the L/T transition the J band (1.27 µm) *brightens* even though the objects are
+cooling. The leading explanation is **cloud clearing**: the clouds thin out or break up, letting light from deeper,
+hotter layers escape. But there is a lot of uncertainty here — *how* the clouds clear (rain-out, holes and patchiness,
+or something else) is still debated, and the model grids handle it in different ways.
 
 **What f<sub>sed</sub> means.** Cloud particles are always being lifted by the moving gas and are always settling back
 down under gravity. f<sub>sed</sub> (the *sedimentation efficiency*) says how quickly they settle — how fast the clouds
@@ -1436,8 +1481,9 @@ you describe one. Indices (section 7) are ratios within one spectrum and do not 
 ## 4. Which parameters do the data pin down? The χ² map
 
 Each cell shows the best χ²<sub>red</sub> among models with that pair of values (the other parameters are free). The star is
-the overall best fit. A small dark spot means a well-constrained pair; a long dark valley means the two parameters
-**trade off** — a degeneracy (notebook 5).
+the overall best fit. The colour map runs from dark (high χ², bad fits) to **bright yellow (low χ², good fits)**. A
+small bright spot means a well-constrained pair; a long bright valley means the two parameters **trade off** — a
+degeneracy (notebook 5).
 """),
         code("""
 # ✏️ SETTINGS YOU CAN CHANGE
@@ -1630,8 +1676,8 @@ See the [field guide page on data problems](../field_guide/data_problems.md).
 
 You now have the skills to examine a real brown-dwarf spectrum: reading a spectrum, the band atlas, the sequence,
 the effect of each parameter, model fits with uncertainties, comparing with the template for its type, indices, and
-data-quality checks. The next step, which your instructor will give you, applies them to real SPHEREx spectra and asks
-you to explain, in words, where and why an object departs from its best-fit model.
+data-quality checks. Soon you will be sent actual SPHEREx spectra to look at, and you will use these skills to explain,
+in words, where and why an object departs from its best-fit model.
 
 ### Exercise 6.1
 Set `FIXED = {"clouds": "nc"}` (cloud-free models only) and re-run sections 2–5. How do the best-fit T<sub>eff</sub> and
@@ -1662,12 +1708,12 @@ check that it is not one bad channel.) Because the template does *not* share it,
          "Field guide: [Indices](../field_guide/indices.md), [Data problems](../field_guide/data_problems.md)"],
         [("Why is each model averaged onto the data's channels before fitting?",
           "SPHEREx blurs narrow model features together; comparing an unbinned model with SPHEREx data is not fair."),
-         ("What does a long dark valley in a χ² map mean?", "The two parameters trade off (a degeneracy); the data do not pin down either alone."),
+         ("What does a long bright (yellow) valley in a χ² map mean?", "The two parameters trade off (a degeneracy); the data do not pin down either alone."),
          ("A residual appears in an object and in its template. What is the likely cause?",
           "The models — they get every object of that type wrong in the same way."),
          ("When is the CH<sub>4</sub> index not meaningful?", "For Y dwarfs (CH<sub>4</sub> undetected at SPHEREx sensitivity)."),
          ("What does an isolated outlier look like in a significance plot?", "A single large spike with normal neighbours, often outside any band.")],
-        "ask your instructor for the next step.")
+        "you will be sent actual SPHEREx data to look at soon.")
     return f, cells
 
 

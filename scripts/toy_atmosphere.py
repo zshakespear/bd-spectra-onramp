@@ -53,7 +53,8 @@ TOY_BANDS = [
     ("CO", 4.65, 0.120, 25.0),
     ("CO2", 4.25, 0.040, 15.0),
 ]
-CIA = ("H2_CIA", 2.40, 0.45, 1.5)
+# Centre and width put the toy CIA at ~1.6-3 um, the range the band atlas gives (1.7-3 um).
+CIA = ("H2_CIA", 2.35, 0.30, 1.5)
 ABSORBERS = ["H2O", "CH4", "CO", "CO2", "H2_CIA"]
 
 

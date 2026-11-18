@@ -14,7 +14,7 @@
 |---|---|
 | χ²<sub>red</sub> of the best fit | Usually ≫ 1 (≥ 10 for high-S/N spectra). The models are imperfect; best-fit parameters are rough. |
 | the top ~10 models | Do very different parameter sets give almost the same χ²<sub>red</sub>? Then those parameters are not pinned down. |
-| χ² map (`bd.plot_chi2_map`) | Small dark spot = constrained. Long dark valley = two parameters trade off (degeneracy). |
+| χ² map (`bd.plot_chi2_map`) | Bright yellow = low χ² (good). Small bright spot = constrained. Long bright valley = two parameters trade off (degeneracy). |
 | ratio panel | Where is the data brighter / fainter than the model? Inside which absorber band? The look depends on the scaling. |
 | significance panel | Points beyond ±3σ. Clusters inside a band = a feature; isolated single points = check for a [data problem](data_problems.md). |
 
