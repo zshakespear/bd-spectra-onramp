@@ -458,7 +458,7 @@ probability about e<sup>−τ</sup>. So:
 **Why τ depends on wavelength.** Each kind of atom or molecule absorbs light only at certain wavelengths, set by the
 ways it can rotate and vibrate. Water, for example, absorbs strongly near 1.4 µm but only weakly near 1.27 µm. A
 range of wavelengths where a molecule absorbs strongly is called a **band**. So τ depends on wavelength: inside a
-band, τ = 2/3 is reached *high up*; in a **window** between bands, where little absorbs, we see *deep*.
+band, τ = 2/3 is reached *high up* in the atmosphere; in a **window** between bands, where little absorbs, we see *deep* into the atmosphere.
 
 **What the flux tells you:** the flux at each wavelength tells you the approximate **temperature of the layer
 where τ = 2/3** at that wavelength. A hot layer gives a lot of flux; a cool layer gives little.
@@ -1209,8 +1209,7 @@ smoother; cloud-free models have the deepest, brightest windows.
 
 **The L/T transition.** Across the L/T transition the J band (1.27 µm) *brightens* even though the objects are
 cooling. The leading explanation is **cloud clearing**: the clouds thin out or break up, letting light from deeper,
-hotter layers escape. But there is a lot of uncertainty here — *how* the clouds clear (rain-out, holes and patchiness,
-or something else) is still debated, and the model grids handle it in different ways.
+hotter layers escape, but there is a lot of uncertainty here. The model grids handle the transition in different ways.
 
 **What f<sub>sed</sub> means.** Cloud particles are always being lifted by the moving gas and are always settling back
 down under gravity. f<sub>sed</sub> (the *sedimentation efficiency*) says how quickly they settle — how fast the clouds
